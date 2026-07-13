@@ -56,7 +56,7 @@ export default function Hero({
             />
             <div className="relative w-full h-full rounded-2xl border border-[#10b981]/20 overflow-hidden">
               <Image
-                src="/public/images/sharad-headshot.jpg"
+                src=".public/Sharad_Pawar_Saini_Resume.pdf"
                 alt="Sharad Pawar Saini — Founder & Engineer"
                 fill
                 priority
