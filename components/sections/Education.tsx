@@ -53,7 +53,7 @@ export default function Education() {
               </p>
               <div className="flex flex-wrap gap-4 text-sm text-gray-500 mb-6">
                 <span className="flex items-center gap-1.5">
-                  <Calendar size={13} /> 2022 – 2026 (Expected)
+                  <Calendar size={13} /> 2023 – 2027 (Expected)
                 </span>
                 <span className="flex items-center gap-1.5">
                   <MapPin size={13} /> Dehradun, Uttarakhand, India
