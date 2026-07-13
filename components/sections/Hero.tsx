@@ -5,7 +5,7 @@ import Image from "next/image";
 import { ArrowRight, Sparkles, ChevronDown, Download } from "lucide-react";
 
 const tickerItems = [
-  "B.Tech CS '26",
+  "B.Tech CS '27",
   "Data Science Intern @ Prodigy InfoTech",
   "Founder — EHP",
   "AI/ML Enthusiast",
@@ -56,7 +56,7 @@ export default function Hero({
             />
             <div className="relative w-full h-full rounded-2xl border border-[#10b981]/20 overflow-hidden">
               <Image
-                src="/images/sharad-headshot.jpg"
+                src="/public/images/sharad-headshot.jpg"
                 alt="Sharad Pawar Saini — Founder & Engineer"
                 fill
                 priority
