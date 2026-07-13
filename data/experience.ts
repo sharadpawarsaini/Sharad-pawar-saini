@@ -17,7 +17,7 @@ export const experience: Experience[] = [
     role: "Data Science Intern",
     type: "Internship",
     duration: "Ongoing",
-    startDate: "2025",
+    startDate: "2026",
     endDate: "Present",
     location: "Remote",
     description: [
