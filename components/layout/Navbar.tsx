@@ -74,7 +74,7 @@ export default function Navbar() {
             Ask AI
           </a>
           <a
-            href="/resume.pdf"
+            href="/Sharad.pdf"
             download
             className="flex items-center gap-2 text-sm bg-[#10b981] text-black font-semibold px-4 py-2 rounded-lg hover:bg-emerald-400 transition-all"
             aria-label="Download Resume"
