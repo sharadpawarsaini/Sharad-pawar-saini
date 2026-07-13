@@ -5,28 +5,28 @@ import { Code2, Cpu, Rocket, BookOpen } from "lucide-react";
 
 const timeline = [
   {
-    year: "2022",
+    year: "2023",
     label: "Graphic Era Hill University",
     desc: "Started B.Tech CS — went all-in on DSA fundamentals via Striver A2Z",
     icon: BookOpen,
     color: "text-blue-400",
   },
   {
-    year: "2024",
+    year: "2025",
     label: "EHP — Founder",
     desc: "Identified a gap in emergency medical info access. Built, launched, and shipped EHP solo.",
     icon: Rocket,
     color: "text-emerald-400",
   },
   {
-    year: "2024",
+    year: "2025",
     label: "BioVerse LifeLink Catalyst",
     desc: "ML-driven vital-sign prediction. Filed provisional patent for core algorithm.",
     icon: Cpu,
     color: "text-purple-400",
   },
   {
-    year: "2025",
+    year: "2026",
     label: "Prodigy InfoTech — Data Science Intern",
     desc: "Applied ML on 1.5M+ row datasets. NLP pipelines, classification, geospatial analysis.",
     icon: Code2,
