@@ -121,7 +121,7 @@ export default function Hero({
               <ArrowRight size={16} />
             </button>
             <a
-              href="/Sharad_Pawar_saini_Resume.pdf"
+              href="/Sharad.pdf"
               download
               className="flex items-center justify-center gap-2 border border-white/15 hover:border-white/30 text-white hover:bg-white/5 px-6 py-3.5 rounded-xl transition-all"
               aria-label="Download Resume PDF"
