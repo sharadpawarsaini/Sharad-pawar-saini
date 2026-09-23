@@ -3,7 +3,7 @@ export type Project = {
   title: string;
   oneLiner: string;
   description: string;
-  role: "Founder" | "Solo Founder" | "Contributor" | "Academic Project";
+  role: "Founder" | "Solo Founder" | "Lead Architect" | "Contributor" | "Academic Project";
   stack: string[];
   githubUrl?: string;
   liveUrl?: string;
@@ -13,6 +13,23 @@ export type Project = {
 };
 
 export const projects: Project[] = [
+  {
+    slug: "sentinel-secure-rag",
+    title: "SENTINEL — Secure & Trustworthy RAG System",
+    oneLiner: "Multi-layer prompt injection defense & evidence-grounded hallucination mitigation with NLI entailment.",
+    description: "An academic research-grade RAG system resolving adversarial prompt injection, document poisoning, and hallucination. Features 4 defense-in-depth barriers, a directional NLI claim entailment trust engine (DeBERTa-v3), closed-loop adaptive mitigation with principled abstention, and an Executive Admin Observability Console. Phase 2 baseline operational with 26/26 tests passing (100%).",
+    role: "Lead Architect",
+    stack: ["Python", "FastAPI", "ChromaDB", "MiniLM", "DeBERTa NLI", "PyTest"],
+    githubUrl: "https://github.com/sharadpawarsaini/sentinel-secure-trustworthy-rag",
+    highlights: [
+      "26/26 Unit & Integration Tests Passing (100% full-pipeline verification)",
+      "4-Layer Defense-in-Depth: Ingestion Guard, Input Guard, Context Quarantine & Egress Filter",
+      "Directional NLI Claim Entailment (DeBERTa-v3) & Composite Trust Scoring for hallucination prevention",
+      "Executive Admin Observability Console with real-time ChromaDB telemetry & query inspection"
+    ],
+    category: "Data-Science",
+    featured: true
+  },
   {
     slug: "ehp",
     title: "EHP — Emergency Health Profile",

@@ -7,9 +7,9 @@ import { X, Send, Sparkles, User, Bot } from "lucide-react";
 type Message = { role: "user" | "assistant"; content: string };
 
 const QUICK_PROMPTS = [
+  "Tell me about SENTINEL RAG",
   "What has he built with AI?",
   "Tell me about EHP",
-  "Is he open to relocation?",
   "What's his strongest ML project?",
   "What does he know about DSA?",
 ];

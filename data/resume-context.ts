@@ -12,10 +12,35 @@ Degree: B.Tech Computer Science (Expected 2026), Graphic Era Hill University, De
 Current Status: Final-year undergraduate, actively seeking campus placement roles in AI/ML, Generative AI, and Full-Stack Engineering.
 
 --- CURRENT WORK ---
+- Lead Architect & Integrator on SENTINEL (A Secure and Trustworthy RAG System — https://github.com/sharadpawarsaini/sentinel-secure-trustworthy-rag)
 - Founder of EHP (Emergency Health Profile) — a live production product (https://ehp-tan-eight.vercel.app)
 - Data Science Intern at Prodigy InfoTech (ongoing / remote)
 
---- FLAGSHIP PROJECT: EHP (Emergency Health Profile) ---
+--- FLAGSHIP RESEARCH & ENGINEERING PROJECT: SENTINEL (Secure & Trustworthy RAG) ---
+SENTINEL is an academic research-grade RAG (Retrieval-Augmented Generation) system built to eliminate prompt injection, document poisoning, and LLM hallucinations.
+- GitHub Repository: https://github.com/sharadpawarsaini/sentinel-secure-trustworthy-rag
+- Core Principle: "Secure the Context. Verify the Answer. Trust the Output."
+- Role: Lead Architect & Integrator — leads system architecture, FastAPI orchestration, query reformulation, re-retrieval pipelines, principled abstention, and experimental harness.
+- Key Capabilities & Architecture:
+  1. Multi-Layer Defense-in-Depth Model (4 Barriers):
+     - Ingestion Guard: Pre-indexing parser detecting document poisoning and hidden malicious instructions.
+     - Input Guard: Normalizes Base64/Unicode homoglyphs, strips zero-width spaces, and blocks direct prompt injection & roleplay jailbreaks.
+     - Context Guard / Quarantine: Inspects top-K retrieved vector chunks before prompt synthesis to isolate indirect injections.
+     - Egress Filter: Intercepts system prompt leaks, credential dumps, and Markdown exfiltration attempts.
+  2. Trust & Hallucination Verification Engine:
+     - Calculates exponentially decayed Retrieval Confidence (C_retrieval).
+     - Decomposes LLM responses into atomic propositional claims.
+     - Validates directional entailment for every claim against retrieved context using DeBERTa cross-encoder NLI (cross-encoder/nli-deberta-v3-small).
+     - Computes Composite Trust Score (TS) categorizing answers into HIGH TRUST, MEDIUM TRUST, or LOW TRUST.
+  3. Closed-Loop Adaptive Mitigation:
+     - Automatically triggers query reformulation and secondary re-retrieval when confidence is low.
+     - Enforces principled abstention ("Insufficient Verified Evidence") instead of emitting confabulated hallucinations.
+  4. Observability & Testing:
+     - 26/26 Unit & Integration Tests Passing (100% test pass rate in pytest).
+     - Executive Admin Observability Console (/admin) tracking live vector telemetry, query audit trails, chunk explorer, and roundtrip synthesis latencies.
+  5. Stack: Python 3.12+, FastAPI, ChromaDB (persistent vector store), all-MiniLM-L6-v2 embeddings, DeBERTa NLI, PyTest, Tailwind CSS.
+
+--- FLAGSHIP STARTUP VENTURE: EHP (Emergency Health Profile) ---
 EHP is a QR-code based emergency health platform Sharad founded solo. When a QR code is scanned, it instantly surfaces a person's critical medical details (blood group, allergies, conditions, emergency contacts) to first responders. 
 - Live URL: https://ehp-tan-eight.vercel.app
 - Role: Solo Founder — owns product design, engineering, and go-to-market strategy
@@ -76,16 +101,16 @@ Q: Is Sharad open to internships?
 A: Yes — Sharad is open to internship and full-time roles in AI/ML, Generative AI, and Full-Stack Engineering.
 
 Q: What is his strongest project?
-A: EHP (Emergency Health Profile) — a live production product he founded solo. For pure AI/ML, BioVerse LifeLink Catalyst (provisional patent filed).
+A: For Research / GenAI: SENTINEL (A Secure and Trustworthy RAG System with multi-layer prompt injection defense and NLI hallucination mitigation, 26/26 tests passing, FastAPI + ChromaDB). For Startups / Production: EHP (Emergency Health Profile — live solo-founded platform). For ML Algorithms: BioVerse LifeLink Catalyst (provisional patent filed).
 
 Q: Does he know DSA?
 A: Yes — he completed Striver's A2Z DSA sheet (a 20-week structured roadmap covering arrays, trees, graphs, DP, and more). Strong C++ background for competitive-style problems.
 
 Q: Has he shipped real products?
-A: Yes — EHP is live in production. HireTrack, Placement Portal, and NestFinder are other shipped MVPs.
+A: Yes — EHP is live in production. SENTINEL has an operational Phase 2 baseline with an executive admin console. HireTrack, Placement Portal, and NestFinder are other shipped MVPs.
 
 Q: What GenAI experience does he have?
-A: Sharad has built with LLMs, prompt engineering, RAG concepts, and this very portfolio contains a live AI chat widget built on top of the Gemini API.
+A: Deep hands-on experience: Lead Architect on SENTINEL (building multi-layer prompt injection guards, cross-encoder DeBERTa NLI hallucination verification, ChromaDB vector retrieval, and adaptive mitigation loops), prompt engineering, LLMs, and this very portfolio's live Gemini AI chat assistant.
 
 Q: What is his availability?
 A: Immediately available. Looking for campus placement / internship roles starting 2026.

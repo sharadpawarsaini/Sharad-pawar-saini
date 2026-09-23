@@ -5,13 +5,13 @@ import Image from "next/image";
 import { ArrowRight, Sparkles, ChevronDown, Download } from "lucide-react";
 
 const tickerItems = [
-  "B.Tech CS '27",
-  "Data Science Intern @ Prodigy InfoTech",
+  "Lead Architect — SENTINEL RAG",
   "Founder — EHP",
-  "AI/ML Enthusiast",
+  "Data Science Intern @ Prodigy InfoTech",
+  "B.Tech CS '27",
+  "Prompt Injection & LLM Security",
   "DSA (Striver A2Z)",
   "Open to Placement Roles",
-  "Building with GenAI",
 ];
 
 const doubled = [...tickerItems, ...tickerItems];

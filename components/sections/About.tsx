@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Code2, Cpu, Rocket, BookOpen } from "lucide-react";
+import { Code2, Cpu, Rocket, BookOpen, ShieldCheck } from "lucide-react";
 
 const timeline = [
   {
@@ -32,6 +32,13 @@ const timeline = [
     icon: Code2,
     color: "text-amber-400",
   },
+  {
+    year: "2026",
+    label: "SENTINEL — Lead Architect",
+    desc: "Architected a Trustworthy RAG System with multi-layer prompt injection defense & NLI hallucination mitigation. Phase 2 live with 26/26 tests passing.",
+    icon: ShieldCheck,
+    color: "text-sky-400",
+  },
 ];
 
 export default function About() {
@@ -50,27 +57,32 @@ export default function About() {
           </p>
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
             From DSA-first prep to
-            <span className="text-[#10b981]"> founder-mode building</span>
+            <span className="text-[#10b981]"> founder &amp; system architect</span>
           </h2>
           <div className="max-w-2xl space-y-4 text-gray-400 leading-relaxed">
             <p>
-              I&apos;m the founder of{" "}
+              I&apos;m the Lead Architect of{" "}
+              <strong className="text-white">SENTINEL</strong> — a secure, trustworthy RAG system
+              featuring multi-barrier prompt injection defense, document poisoning quarantine,
+              and cross-encoder NLI hallucination mitigation with 26/26 automated tests passing.
+            </p>
+            <p>
+              I&apos;m also the founder of{" "}
               <strong className="text-white">EHP (Emergency Health Profile)</strong> — a QR-code
               based emergency health platform live in production. I own it end-to-end: product
               design, engineering, and go-to-market — including a freemium + B2B model and a
               bilingual Instagram Reel campaign targeting Dehradun college students.
             </p>
             <p>
-              That founder instinct runs through everything else I build: a blockchain-backed
-              voting system, a graph-algorithm railway optimizer, and BioVerse LifeLink Catalyst
-              — a vital-sign prediction system now under provisional patent.
+              That builder instinct runs through everything else I build: BioVerse LifeLink Catalyst
+              (vital-sign prediction system under provisional patent), blockchain-backed voting, and
+              graph-algorithm network optimizers.
             </p>
             <p>
               Alongside building, I&apos;ve put in the reps placements demand: a structured
               20-week DSA roadmap through Striver&apos;s A2Z sheet, depth in OS, DBMS, Computer
               Networks, and OOPs. I&apos;m currently looking for AI/ML, GenAI, or Full-Stack
-              roles where I can keep doing exactly this — identify a real problem, and ship the
-              solution.
+              roles where I can identify high-impact problems, architect robust systems, and ship.
             </p>
           </div>
         </motion.div>

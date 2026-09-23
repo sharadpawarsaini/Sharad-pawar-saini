@@ -4,6 +4,7 @@ import { useState } from "react";
 import Navbar from "@/components/layout/Navbar";
 import Hero from "@/components/sections/Hero";
 import About from "@/components/sections/About";
+import SentinelSpotlight from "@/components/sections/SentinelSpotlight";
 import FounderSpotlight from "@/components/sections/FounderSpotlight";
 import Experience from "@/components/sections/Experience";
 import Projects from "@/components/sections/Projects";
@@ -47,6 +48,8 @@ export default function Home() {
       <Hero onOpenChat={() => setChatOpen(true)} />
       <Divider />
       <About />
+      <Divider />
+      <SentinelSpotlight />
       <Divider />
       <FounderSpotlight />
       <Divider />
