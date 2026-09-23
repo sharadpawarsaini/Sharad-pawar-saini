@@ -10,6 +10,9 @@ export type Project = {
   highlights: string[];
   category: "Full-Stack" | "Data-Science" | "Supporting";
   featured: boolean;
+  problem?: string;
+  architecture?: string;
+  metrics?: string[];
 };
 
 export const projects: Project[] = [
@@ -28,7 +31,14 @@ export const projects: Project[] = [
       "Executive Admin Observability Console with real-time ChromaDB telemetry & query inspection"
     ],
     category: "Data-Science",
-    featured: true
+    featured: true,
+    problem: "Conventional RAG systems blindly ingest external documents and user queries, making them highly vulnerable to direct and indirect prompt injection, corpus poisoning, and hallucinated responses delivered with false confidence.",
+    architecture: "Multi-layer defense pipeline with pre-indexing sanitization, pre-retrieval Unicode/Base64 normalization, post-retrieval context quarantine, cross-encoder DeBERTa NLI claim entailment scoring, and an adaptive re-retrieval or principled abstention loop.",
+    metrics: [
+      "26/26 automated unit & integration tests passing (100%)",
+      "4-barrier defense model covering ingest, input, context, and egress",
+      "Calibrated trust scoring thresholding answers into High, Medium, or Low"
+    ]
   },
   {
     slug: "ehp",
@@ -46,7 +56,14 @@ export const projects: Project[] = [
       "Designed freemium model & institutional B2B hospital portal"
     ],
     category: "Full-Stack",
-    featured: true
+    featured: true,
+    problem: "During accidents or critical emergencies, first responders and bystanders often lose critical minutes attempting to identify blood group, life-threatening allergies, pre-existing conditions, or emergency family contacts.",
+    architecture: "Dynamic QR routing connected to a secure cloud database with encrypted patient profiles, mobile-first responsive rendering for first-responder smartphones, and an institutional hospital verification portal.",
+    metrics: [
+      "Live production deployment with real student and user accounts",
+      "Instant scan-to-display sub-second loading latency",
+      "Executed targeted bilingual campaign across Dehradun colleges"
+    ]
   },
   {
     slug: "bioverse-lifelink-catalyst",

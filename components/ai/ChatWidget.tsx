@@ -38,14 +38,33 @@ export default function ChatWidget() {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
 
-  // Allow hero button to open the widget
+  const sendMessageRef = useRef(sendMessage);
+  useEffect(() => {
+    sendMessageRef.current = sendMessage;
+  });
+
+  // Allow hero button & global custom events to open the widget
   useEffect(() => {
     const trigger = document.getElementById("chat-trigger");
     if (trigger) {
       trigger.addEventListener("click", () => setOpen(true));
     }
+
+    const handleCustomPrompt = (e: Event) => {
+      const customEvent = e as CustomEvent<{ prompt?: string }>;
+      setOpen(true);
+      if (customEvent.detail?.prompt) {
+        setTimeout(() => {
+          sendMessageRef.current(customEvent.detail!.prompt!);
+        }, 300);
+      }
+    };
+
+    window.addEventListener("open-ai-chat", handleCustomPrompt);
+
     return () => {
       trigger?.removeEventListener("click", () => setOpen(true));
+      window.removeEventListener("open-ai-chat", handleCustomPrompt);
     };
   }, []);
 

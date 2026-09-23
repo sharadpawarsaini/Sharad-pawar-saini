@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "@/components/layout/Navbar";
 import Hero from "@/components/sections/Hero";
 import About from "@/components/sections/About";
@@ -9,10 +9,14 @@ import FounderSpotlight from "@/components/sections/FounderSpotlight";
 import Experience from "@/components/sections/Experience";
 import Projects from "@/components/sections/Projects";
 import Skills from "@/components/sections/Skills";
+import DsaTracker from "@/components/sections/DsaTracker";
 import Education from "@/components/sections/Education";
 import Contact from "@/components/sections/Contact";
 import ChatWidget from "@/components/ai/ChatWidget";
-import { Heart } from "lucide-react";
+import CommandPalette from "@/components/layout/CommandPalette";
+import RecruiterSpeedrunModal from "@/components/modals/RecruiterSpeedrunModal";
+import TerminalModal from "@/components/modals/TerminalModal";
+import { Heart, Terminal, Zap } from "lucide-react";
 
 // Inline SVG brand icons
 function GithubIcon({ size = 16 }: { size?: number }) {
@@ -40,12 +44,46 @@ function Divider() {
 }
 
 export default function Home() {
-  const [, setChatOpen] = useState(false);
+  const [cmdOpen, setCmdOpen] = useState(false);
+  const [recruiterOpen, setRecruiterOpen] = useState(false);
+  const [terminalOpen, setTerminalOpen] = useState(false);
+
+  // Global Keyboard Shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Cmd+K or Ctrl+K for command palette
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setCmdOpen((prev) => !prev);
+      }
+      // Backtick for terminal (when not typing in an input or textarea)
+      if (
+        e.key === "`" &&
+        !["INPUT", "TEXTAREA"].includes((e.target as HTMLElement)?.tagName)
+      ) {
+        e.preventDefault();
+        setTerminalOpen((prev) => !prev);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  const openAiChat = (initialPrompt?: string) => {
+    window.dispatchEvent(
+      new CustomEvent("open-ai-chat", { detail: { prompt: initialPrompt } })
+    );
+  };
 
   return (
     <main>
-      <Navbar />
-      <Hero onOpenChat={() => setChatOpen(true)} />
+      <Navbar
+        onOpenCmdPalette={() => setCmdOpen(true)}
+        onOpenRecruiterMode={() => setRecruiterOpen(true)}
+        onOpenTerminal={() => setTerminalOpen(true)}
+      />
+      <Hero onOpenChat={() => openAiChat()} />
       <Divider />
       <About />
       <Divider />
@@ -61,6 +99,8 @@ export default function Home() {
       <Divider />
       <Skills />
       <Divider />
+      <DsaTracker />
+      <Divider />
       <Education />
       <Divider />
       <Contact />
@@ -71,7 +111,23 @@ export default function Home() {
           <p className="text-gray-600 text-sm flex items-center gap-1.5">
             Built with <Heart size={13} className="text-[#10b981]" aria-label="love" /> by Sharad Pawar Saini
           </p>
+
           <div className="flex items-center gap-4">
+            <button
+              onClick={() => setRecruiterOpen(true)}
+              className="text-xs text-gray-500 hover:text-emerald-400 flex items-center gap-1 transition-colors"
+            >
+              <Zap size={12} className="text-[#10b981]" />
+              Recruiter Mode
+            </button>
+            <button
+              onClick={() => setTerminalOpen(true)}
+              className="text-xs text-gray-500 hover:text-white flex items-center gap-1 transition-colors"
+            >
+              <Terminal size={12} className="text-sky-400" />
+              CLI Terminal
+            </button>
+            <span className="text-gray-700">|</span>
             <a
               href="https://github.com/sharadpawarsaini"
               target="_blank"
@@ -91,12 +147,35 @@ export default function Home() {
               <LinkedinIcon size={16} />
             </a>
           </div>
+
           <p className="text-gray-700 text-xs">Next.js 15 · Framer Motion · Gemini AI</p>
         </div>
       </footer>
 
       {/* Floating AI Chat Widget */}
       <ChatWidget />
+
+      {/* Command Palette (Cmd+K) */}
+      <CommandPalette
+        open={cmdOpen}
+        onClose={() => setCmdOpen(false)}
+        onOpenRecruiterMode={() => setRecruiterOpen(true)}
+        onOpenTerminal={() => setTerminalOpen(true)}
+        onOpenChat={openAiChat}
+      />
+
+      {/* Recruiter Speedrun 30-Second Summary Modal */}
+      <RecruiterSpeedrunModal
+        open={recruiterOpen}
+        onClose={() => setRecruiterOpen(false)}
+        onOpenChat={openAiChat}
+      />
+
+      {/* Developer Interactive Terminal CLI Modal */}
+      <TerminalModal
+        open={terminalOpen}
+        onClose={() => setTerminalOpen(false)}
+      />
     </main>
   );
 }

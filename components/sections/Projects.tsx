@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { projects, Project } from "@/data/projects";
-import { ExternalLink, Code2, Star, ChevronRight } from "lucide-react";
+import { ExternalLink, Code2, Star, ChevronRight, Search, Sparkles, FileText, X } from "lucide-react";
+import ProjectDetailModal from "@/components/modals/ProjectDetailModal";
 
 type Filter = "All" | "Full-Stack" | "Data-Science" | "Supporting";
 const FILTERS: Filter[] = ["All", "Full-Stack", "Data-Science", "Supporting"];
@@ -14,7 +15,26 @@ const FILTER_LABELS: Record<Filter, string> = {
   Supporting: "More Experiments",
 };
 
-function ProjectCard({ project }: { project: Project }) {
+const POPULAR_TAGS = [
+  "All",
+  "Python",
+  "FastAPI",
+  "Next.js",
+  "React",
+  "MongoDB",
+  "ChromaDB",
+  "NLP",
+  "ML",
+  "C++",
+];
+
+function ProjectCard({
+  project,
+  onOpenDetails,
+}: {
+  project: Project;
+  onOpenDetails: () => void;
+}) {
   const roleColor: Record<string, string> = {
     "Lead Architect": "text-sky-400 bg-sky-400/10 border-sky-400/20",
     Founder: "text-emerald-400 bg-emerald-400/10 border-emerald-400/20",
@@ -30,7 +50,8 @@ function ProjectCard({ project }: { project: Project }) {
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.97 }}
       transition={{ duration: 0.3 }}
-      className="glass rounded-2xl border border-white/5 hover:border-[#10b981]/20 p-6 flex flex-col gap-4 group transition-colors"
+      onClick={onOpenDetails}
+      className="glass rounded-2xl border border-white/5 hover:border-[#10b981]/30 p-6 flex flex-col gap-4 group transition-all cursor-pointer relative hover:-translate-y-1 hover:shadow-xl hover:shadow-[#10b981]/5"
     >
       {/* Header */}
       <div className="flex items-start justify-between gap-3">
@@ -46,7 +67,7 @@ function ProjectCard({ project }: { project: Project }) {
             {project.title}
           </h3>
         </div>
-        <div className="flex gap-2 shrink-0">
+        <div className="flex gap-2 shrink-0" onClick={(e) => e.stopPropagation()}>
           {project.githubUrl && (
             <a
               href={project.githubUrl}
@@ -73,7 +94,7 @@ function ProjectCard({ project }: { project: Project }) {
       </div>
 
       {/* One-liner */}
-      <p className="text-gray-500 text-sm leading-relaxed">{project.oneLiner}</p>
+      <p className="text-gray-400 text-sm leading-relaxed">{project.oneLiner}</p>
 
       {/* Highlights */}
       {project.highlights.length > 0 && (
@@ -91,16 +112,34 @@ function ProjectCard({ project }: { project: Project }) {
         </ul>
       )}
 
-      {/* Stack */}
-      <div className="flex flex-wrap gap-1.5 mt-auto">
-        {project.stack.slice(0, 5).map((t) => (
-          <span
-            key={t}
-            className="text-xs bg-white/5 border border-white/10 text-gray-500 px-2 py-0.5 rounded-full"
-          >
-            {t}
-          </span>
-        ))}
+      {/* Stack & Details CTA */}
+      <div className="flex items-center justify-between gap-2 mt-auto pt-2 border-t border-white/5">
+        <div className="flex flex-wrap gap-1.5">
+          {project.stack.slice(0, 4).map((t) => (
+            <span
+              key={t}
+              className="text-xs bg-white/5 border border-white/10 text-gray-400 px-2 py-0.5 rounded-md font-mono"
+            >
+              {t}
+            </span>
+          ))}
+          {project.stack.length > 4 && (
+            <span className="text-xs text-gray-500 self-center">
+              +{project.stack.length - 4}
+            </span>
+          )}
+        </div>
+
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onOpenDetails();
+          }}
+          className="shrink-0 text-xs text-[#10b981] group-hover:underline flex items-center gap-1 font-medium"
+        >
+          <FileText size={12} />
+          Details
+        </button>
       </div>
     </motion.article>
   );
@@ -108,17 +147,44 @@ function ProjectCard({ project }: { project: Project }) {
 
 export default function Projects() {
   const [active, setActive] = useState<Filter>("All");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedTag, setSelectedTag] = useState<string>("All");
+  const [activeModalProject, setActiveModalProject] = useState<Project | null>(null);
 
-  const filtered =
-    active === "All"
-      ? projects
-      : projects.filter((p) => p.category === active);
+  const filtered = useMemo(() => {
+    return projects.filter((p) => {
+      // Category filter
+      if (active !== "All" && p.category !== active) return false;
+
+      // Tag filter
+      if (selectedTag !== "All") {
+        const hasTag = p.stack.some((s) =>
+          s.toLowerCase().includes(selectedTag.toLowerCase())
+        );
+        if (!hasTag) return false;
+      }
+
+      // Search query
+      if (searchQuery.trim()) {
+        const query = searchQuery.toLowerCase();
+        const matchesTitle = p.title.toLowerCase().includes(query);
+        const matchesDesc = p.description.toLowerCase().includes(query);
+        const matchesOneLiner = p.oneLiner.toLowerCase().includes(query);
+        const matchesStack = p.stack.some((s) => s.toLowerCase().includes(query));
+        if (!matchesTitle && !matchesDesc && !matchesOneLiner && !matchesStack) {
+          return false;
+        }
+      }
+
+      return true;
+    });
+  }, [active, selectedTag, searchQuery]);
 
   // Show DS internship banner when on Data-Science tab
   const showDsBanner = active === "Data-Science";
 
   return (
-    <section id="projects" className="py-24 px-6" aria-label="Projects">
+    <section id="projects" className="py-24 px-6 relative" aria-label="Projects">
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -130,31 +196,90 @@ export default function Projects() {
           <p className="text-xs text-[#10b981] font-semibold uppercase tracking-widest mb-3">
             Projects
           </p>
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
-            Things I&apos;ve built &amp; shipped
-          </h2>
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
+            <div>
+              <h2 className="text-3xl sm:text-4xl font-bold text-white">
+                Things I&apos;ve built &amp; shipped
+              </h2>
+              <p className="text-sm text-gray-400 mt-1">
+                Click any project card to inspect its system design, problem statement, and benchmarks.
+              </p>
+            </div>
+            <div className="text-xs font-mono text-gray-400 bg-white/5 border border-white/10 px-3 py-1.5 rounded-lg self-start sm:self-auto">
+              Showing <span className="text-[#10b981] font-bold">{filtered.length}</span> of {projects.length} projects
+            </div>
+          </div>
+
+          {/* Search bar */}
+          <div className="relative mb-6">
+            <Search
+              size={16}
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500"
+              aria-hidden="true"
+            />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search by keyword, technology, or problem (e.g. FastAPI, RAG, QR, Blockchain, NLP)..."
+              className="w-full bg-[#0d1117] border border-white/10 rounded-xl pl-11 pr-10 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#10b981]/50 focus:ring-1 focus:ring-[#10b981]/50 transition-all"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery("")}
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white"
+                aria-label="Clear search"
+              >
+                <X size={16} />
+              </button>
+            )}
+          </div>
 
           {/* Filter tabs */}
-          <div
-            className="flex flex-wrap gap-2"
-            role="tablist"
-            aria-label="Project category filter"
-          >
-            {FILTERS.map((f) => (
-              <button
-                key={f}
-                role="tab"
-                aria-selected={active === f}
-                onClick={() => setActive(f)}
-                className={`text-sm px-4 py-2 rounded-lg border transition-all ${
-                  active === f
-                    ? "bg-[#10b981] text-black border-transparent font-semibold"
-                    : "bg-white/5 border-white/10 text-gray-400 hover:text-white hover:border-white/20"
-                }`}
-              >
-                {FILTER_LABELS[f]}
-              </button>
-            ))}
+          <div className="space-y-3">
+            {/* Category tabs */}
+            <div
+              className="flex flex-wrap gap-2"
+              role="tablist"
+              aria-label="Project category filter"
+            >
+              {FILTERS.map((f) => (
+                <button
+                  key={f}
+                  role="tab"
+                  aria-selected={active === f}
+                  onClick={() => setActive(f)}
+                  className={`text-sm px-4 py-2 rounded-lg border transition-all ${
+                    active === f
+                      ? "bg-[#10b981] text-black border-transparent font-semibold shadow-md shadow-emerald-950"
+                      : "bg-white/5 border-white/10 text-gray-400 hover:text-white hover:border-white/20"
+                  }`}
+                >
+                  {FILTER_LABELS[f]}
+                </button>
+              ))}
+            </div>
+
+            {/* Popular Tech Filter Pills */}
+            <div className="flex flex-wrap items-center gap-1.5 pt-1">
+              <span className="text-xs text-gray-500 mr-1 font-mono">Tech filter:</span>
+              {POPULAR_TAGS.map((tag) => {
+                const isSelected = selectedTag === tag;
+                return (
+                  <button
+                    key={tag}
+                    onClick={() => setSelectedTag(tag)}
+                    className={`text-xs px-2.5 py-1 rounded-md font-mono border transition-all ${
+                      isSelected
+                        ? "bg-white/20 text-white border-white/30 font-semibold"
+                        : "bg-black/30 border-white/5 text-gray-400 hover:text-gray-200 hover:border-white/15"
+                    }`}
+                  >
+                    {tag}
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </motion.div>
 
@@ -176,18 +301,48 @@ export default function Projects() {
           )}
         </AnimatePresence>
 
-        {/* Grid */}
-        <motion.div
-          layout
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
-        >
-          <AnimatePresence mode="popLayout">
-            {filtered.map((p) => (
-              <ProjectCard key={p.slug} project={p} />
-            ))}
-          </AnimatePresence>
-        </motion.div>
+        {/* Grid or Empty State */}
+        {filtered.length > 0 ? (
+          <motion.div
+            layout
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
+          >
+            <AnimatePresence mode="popLayout">
+              {filtered.map((p) => (
+                <ProjectCard
+                  key={p.slug}
+                  project={p}
+                  onOpenDetails={() => setActiveModalProject(p)}
+                />
+              ))}
+            </AnimatePresence>
+          </motion.div>
+        ) : (
+          <div className="text-center py-16 px-4 bg-white/[0.02] border border-white/5 rounded-2xl">
+            <Sparkles size={24} className="mx-auto text-gray-500 mb-3" />
+            <h3 className="text-white font-semibold text-base mb-1">No matching projects</h3>
+            <p className="text-sm text-gray-400 mb-4 max-w-sm mx-auto">
+              No projects matched your current search filters &ldquo;{searchQuery || selectedTag}&rdquo;.
+            </p>
+            <button
+              onClick={() => {
+                setActive("All");
+                setSearchQuery("");
+                setSelectedTag("All");
+              }}
+              className="text-xs bg-white/10 hover:bg-white/20 text-white px-3 py-2 rounded-lg transition-all"
+            >
+              Reset all filters
+            </button>
+          </div>
+        )}
       </div>
+
+      {/* Case Study Detail Modal */}
+      <ProjectDetailModal
+        project={activeModalProject}
+        onClose={() => setActiveModalProject(null)}
+      />
     </section>
   );
 }
